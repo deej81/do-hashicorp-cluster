@@ -11,6 +11,28 @@ output "ingress_droplet_ip" {
   value = digitalocean_droplet.ingress_client.ipv4_address
 }
 
+output "postgres_cluster_ip" {
+  value = digitalocean_database_cluster.postgres-cluster.private_host
+}
+
+output "postgres_cluster_database" {
+  value = digitalocean_database_cluster.postgres-cluster.database
+}
+
+output "postgres_cluster_user" {
+  value = digitalocean_database_cluster.postgres-cluster.user
+}
+
+output "postgres_cluster_password" {
+  value = digitalocean_database_cluster.postgres-cluster.password
+  sensitive = true
+}
+
+output "postgres_cluster_private_uri" {
+  value = digitalocean_database_cluster.postgres-cluster.private_uri
+  sensitive = true
+}
+
 // output "consul_access_cmd" {
 //   value = format(<<EOT
 //   ssh -f -N -o IdentitiesOnly=yes -i ./id_rsa -L 8500:%s:8500 root@%s

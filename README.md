@@ -76,15 +76,23 @@ This is a nice hosting stack for side projects
 There are quite a few tools used for deploying this architecture so it is therefore recommended to use docker for a consistent deployment environment.
 
 ```bash
+# Use password-store to save your digital ocean token
+# https://www.youtube.com/watch?v=FhwsfH2TpFA
+pass insert digital-ocean/personal-pat
+
 # Build the docker image
 docker build -t hashiplatform-deploy .
 # Run the docker image and mount this repo into it. The ports are so that
 # we can access the UI for Nomad, Vault, Consul, Traefik etc
+
+export SSH_AUTH_SOCK=SETTING
+#if op use export SSH_AUTH_SOCK=~/.1password/agent.sock
+
 docker run \
-	-e DO_TOKEN="REPLACE_ME_WITH_DIGITAL_OCEAN_TOKEN"  \
-	-p 4646:4646 -p 8081:8081 -p 8200:8200 -p 8500:8500 \
-	-v $(pwd):/hashiplatform-deploy  \
-	-it hashiplatform-deploy
+        -e DO_TOKEN="$(pass digital-ocean/personal-pat)"  \
+        -p 4646:4646 -p 8081:8081 -p 8200:8200 -p 8500:8500 \
+        -v $(pwd):/hashiplatform-deploy  \
+        -it hashiplatform-deploy
 # Move into project directory
 cd hashiplatform-deploy
 ```
@@ -118,17 +126,20 @@ terraform apply
 # Remember that the server droplets are private so we need to tunnel through the ingress droplet
 # to access them
 ./setup-tunnels.sh
+
+# Extract environment variables from terraform state (source ensures export works in this shell)
+source ./setup-db-env.sh
+
 cd ..
 ```
 
 ## Deploying some jobs on Nomad 
-Lets use our newly created cluster and start by deploying Traefik and PostgreSQL
+Lets use our newly created cluster and start by deploying Traefik
 
 ```bash
 cd jobs
 nomad run traefik.nomad
 # You can now see traefik UI at localhost:8081 
-nomad run postgres.nomad
 cd ..
 ```
 

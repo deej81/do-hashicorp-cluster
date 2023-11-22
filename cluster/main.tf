@@ -57,7 +57,7 @@ data "template_file" "user_data_client" {
 
 resource "digitalocean_ssh_key" "default" {
   name       = "Nomad Cluster"
-  public_key = file("${path.root}/id_rsa.pub")
+  public_key = file("${path.root}/id_ed25519.pub")
 }
 
 resource "digitalocean_droplet" "nomad_server" {

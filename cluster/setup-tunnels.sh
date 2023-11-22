@@ -10,17 +10,17 @@ SERVER_DROPLET_IP=(${SERVER_DROPLET_IPS[0]})
 SERVER_DROPLET_IP=$(echo "$SERVER_DROPLET_IP" | tr -d '"')
 
 # Consul tunnel
-ssh -4 -f -N -g -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i ./id_rsa -L 8500:$SERVER_DROPLET_IP:8500 root@$INGRESS_IP
+ssh -4 -f -N -g -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i ./id_ed25519 -L 8500:$SERVER_DROPLET_IP:8500 root@$INGRESS_IP
 echo "Consul can be accessed at http://localhost:8500"
 
 # Vault tunnel
-ssh -4 -f -N -g -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i ./id_rsa -L 8200:$SERVER_DROPLET_IP:8200 root@$INGRESS_IP
+ssh -4 -f -N -g -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i ./id_ed25519 -L 8200:$SERVER_DROPLET_IP:8200 root@$INGRESS_IP
 echo "Vault can be accessed at http://localhost:8200"
 
 # Nomad tunnel
-ssh -4 -f -N -g -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i ./id_rsa -L 4646:$SERVER_DROPLET_IP:4646 root@$INGRESS_IP
+ssh -4 -f -N -g -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i ./id_ed25519 -L 4646:$SERVER_DROPLET_IP:4646 root@$INGRESS_IP
 echo "Nomad can be accessed at http://localhost:4646"
 
 # Traefik tunnel
-ssh -4 -f -N -g -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i ./id_rsa -L 8081:$INGRESS_IP:8081 root@$INGRESS_IP
+ssh -4 -f -N -g -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i ./id_ed25519 -L 8081:$INGRESS_IP:8081 root@$INGRESS_IP
 echo "Traefik can be accessed at http://localhost:0881 (When it is enabled)"
