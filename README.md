@@ -85,9 +85,6 @@ docker build -t hashiplatform-deploy .
 # Run the docker image and mount this repo into it. The ports are so that
 # we can access the UI for Nomad, Vault, Consul, Traefik etc
 
-export SSH_AUTH_SOCK=SETTING
-#if op use export SSH_AUTH_SOCK=~/.1password/agent.sock
-
 docker run \
         -e DO_TOKEN="$(pass digital-ocean/personal-pat)"  \
         -p 4646:4646 -p 8081:8081 -p 8200:8200 -p 8500:8500 \
